@@ -1,10 +1,8 @@
-import type { NextPage } from 'next'
 import { useState, useEffect } from 'react';
 import Head from 'next/head'
-import Image from 'next/image'
 import styles from '../styles/Home.module.css'
 
-const Home: NextPage = () => {
+const Home = () => {
   const [file, setFile] = useState('');
   const [transcription, setTranscription] = useState('')
   const [lines, setLines] = useState([]);
@@ -14,6 +12,7 @@ const Home: NextPage = () => {
   }, [transcription]);
   
   const transcribe = async () => {
+    console.log("starting")
     try {
       const response = await fetch('/api/transcribe', {
         method: 'POST',
@@ -23,7 +22,7 @@ const Home: NextPage = () => {
       });
       const received = await response.json();
             const data= JSON.parse(received)
-      const transcription = data.results.channels[0].alternatives[0].paragraphs.transcript;
+      const transcription = data.results.channels[0].alternatives[0].transcript;
       setTranscription(transcription)
     } catch (error) {
       console.error(error);
@@ -61,46 +60,7 @@ const Home: NextPage = () => {
         }
       })}
     </div>}
-        <div className={styles.grid}>
-          <a href="https://developers.deepgram.com/documentation/" className={styles.card}>
-            <h2>Documentation &rarr;</h2>
-            <p>Find in-depth information about Deepgram features and API.</p>
-          </a>
-
-          <a href="https://blog.deepgram.com/" className={styles.card}>
-            <h2>Learn &rarr;</h2>
-            <p>Learn about Deepgram through our tutorials and explore our blog!</p>
-          </a>
-
-          <a
-            href="https://github.com/orgs/deepgram/discussions"
-            className={styles.card}
-          >
-            <h2>Community &rarr;</h2>
-            <p>Join our community to learn more about AI, ML, and have some fun!</p>
-          </a>
-
-
-        </div>
       </main>
-
-      <footer className={styles.footer}>
-        <a
-          href="/__repl"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Built on
-          <span className={styles.logo}>
-            <Image src="/replit.svg" alt="Replit Logo" width={20} height={18} />
-          </span>
-          Replit + 
-          <span className={styles.logo}>
-            <Image src="/dg.svg" alt="Deepgram Logo" width={20} height={18} />
-          </span>
-        </a> 
-               
-      </footer>
     </div>
   )
 }
