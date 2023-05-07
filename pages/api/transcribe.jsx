@@ -5,8 +5,8 @@ const deepgram = new Deepgram(mySecret);
 
 export default async function handler(req, res) {
 const streamSource = {
-  stream: fs.createReadStream("speech.m4a"),
-  mimetype: "m4a",
+  stream: fs.createReadStream("[path_of_file]"),
+  mimetype: "[mimetype]",
 };
 
 const response = await deepgram.transcription.preRecorded(streamSource, {
