@@ -3,7 +3,6 @@ import Head from 'next/head'
 import styles from '../styles/Home.module.css'
 
 const Home = () => {
-  const [file, setFile] = useState('');
   const [transcription, setTranscription] = useState('')
   const [lines, setLines] = useState([]);
   
@@ -16,9 +15,6 @@ const Home = () => {
     try {
       const response = await fetch('/api/transcribe', {
         method: 'POST',
-        body: JSON.stringify({
-          "url": file,
-        })
       });
       const received = await response.json();
             const data= JSON.parse(received)
@@ -42,14 +38,8 @@ const Home = () => {
         <h1 className={styles.title}>
           Welcome to Transcribe Me!
         </h1>
-
-        <p className={styles.description}>
-          Get started sharing a link to your audio file.</p>
         <form >
-          <label htmlFor="audio-file">Link to Audio </label>
-          <input onChange={e => setFile(e.target.value)} type="text" id="audio-file" name="audio-file" required />
           <button type='button' onClick={transcribe} className={styles.button}>Transcribe</button>
-          <p>Sample url: https://www.buzzsprout.com/1976304/11410388-whisper-by-openai-everything-you-need-to-know-about-the-latest-in-open-source-speech-recognition.mp3</p>
         </form>
         {transcription &&  <div className={styles.transcript} id="new-transcription">
       {lines.map((line, index) => {
